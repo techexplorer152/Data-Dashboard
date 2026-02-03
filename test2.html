@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Section Redesign</title>
+  <style>
+    /* 1. RESET & BASE STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f3f4f6; /* Light gray background for the page */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* 2. THE CARD CONTAINER */
+    .cta-container {
+      /* The vibrant teal color similar to your image, but slightly refined */
+      background-color: #1DE9B6;
+      /* Optional: A subtle gradient makes it look more premium */
+      background: linear-gradient(135deg, #1DE9B6 0%, #1AC9A0 100%);
+
+      width: 100%;
+      max-width: 900px; /* Prevents it from getting too wide on huge screens */
+      padding: 80px 40px; /* Generous breathing room */
+      border-radius: 24px; /* Smooth, modern corners */
+      text-align: center;
+      color: #0f172a; /* Dark Slate color for text (softer than pure black) */
+      box-shadow: 0 10px 25px -5px rgba(29, 233, 182, 0.4); /* Soft glow shadow */
+    }
+
+    /* 3. TYPOGRAPHY */
+    .cta-heading {
+      font-size: 3rem; /* Large and bold */
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em; /* Tight tracking looks more professional */
+      line-height: 1.1;
+    }
+
+    .cta-subtext {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 600px; /* Limits width so lines aren't hard to read */
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.9;
+    }
+
+    /* 4. THE BUTTON */
+    .cta-button {
+      display: inline-block;
+      background-color: #0f172a; /* Dark charcoal/slate */
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 50px; /* Pill shape */
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease; /* Smooth animation */
+      border: 2px solid transparent;
+    }
+
+    /* 5. HOVER EFFECTS */
+    .cta-button:hover {
+      transform: translateY(-3px); /* Lifts up slightly */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      background-color: #1e293b; /* Slightly lighter dark on hover */
+    }
+
+    .cta-button:active {
+      transform: translateY(-1px);
+    }
+
+    /* 6. RESPONSIVE DESIGN (Mobile) */
+    @media (max-width: 600px) {
+      .cta-container {
+        padding: 50px 20px;
+      }
+      .cta-heading {
+        font-size: 2rem;
+      }
+      .cta-subtext {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cta-container">
+
+  <h2 class="cta-heading">Let’s build something amazing.</h2>
+
+  <p class="cta-subtext">
+    I’m currently open to new opportunities and collaborations.
+    Whether you have a project in mind or just want to ask a question,
+    feel free to reach out! ❤️
+  </p>
+
+  <a href="https://linkedin.com/in/yourprofile" class="cta-button">
+    View my LinkedIn
+  </a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Connect With Me</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0f172a;                /* dark navy for contrast */
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(20, 184, 166, 0.08);   /* subtle teal tint */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+            border-radius: 24px;
+            padding: 48px 32px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0 0 16px;
+            color: #14b8a6;                    /* teal accent */
+        }
+
+        p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin: 0 0 32px;
+            color: #94a3b8;
+        }
+
+        .heart {
+            color: #f43f5e;
+            font-size: 1.3rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #14b8a6;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+            padding: 16px 40px;
+            border-radius: 9999px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+        }
+
+        .btn:hover {
+            background: #0f766e;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(20, 184, 166, 0.45);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Let’s connect!</h1>
+    <p>View my portfolio • Feel free to reach out with questions, offers, collaborations — I'm open to anyone! <span class="heart">♥</span></p>
+    <a href="YOUR_LINKEDIN_URL_HERE" class="btn" target="_blank">
+        View my LinkedIn
+    </a>
+</div>
+
+</body>
+</html>
