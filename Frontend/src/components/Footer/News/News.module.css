@@ -1,0 +1,117 @@
+.container {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px;
+    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    max-width: 400px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+
+
+.news {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 8px 8px 20px;
+    border-radius: 50px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.icon {
+    color: #aaa;
+    font-size: 1.1rem;
+    margin-right: 12px;
+}
+
+.input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #333;
+    background: transparent;
+}
+
+.input::placeholder {
+    color: #999;
+}
+
+
+.button {
+    background-color: #111;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.button:hover {
+    background-color: #333;
+    transform: scale(1.02);
+}
+
+.arrow {
+    align-self: center;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 28px 20px;
+    }
+
+    .news {
+        max-width: 100%;
+    }
+
+    .button {
+        width: 46px;
+        height: 46px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 16px;
+    }
+
+    .subtitle {
+        margin-bottom: 24px;
+    }
+
+    .news {
+        padding: 6px 6px 6px 16px;
+    }
+
+    .button {
+        width: 42px;
+        height: 42px;
+    }
+}

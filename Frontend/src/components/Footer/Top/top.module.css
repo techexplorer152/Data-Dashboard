@@ -1,50 +1,83 @@
-.container{
+.container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1.5rem;
+    background-color: #0f172a;
     align-self: center;
     margin: 20px;
     min-height: 300px;
-    background: linear-gradient(135deg, #1DE9B6 0%, #1AC9A0 100%);
-
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     border-radius: 20px;
 }
 
-.first{
+
+.first {
+    max-width: 600px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 5px;
+    gap: 1.5rem;
 }
-.first h1{
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 47px;
-    color: #07235a;
 
+
+.first h1 {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+
+
+    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
-.first p{
-    text-align: center;
-    color: #5d66b5;
-    font-weight: bold;
+
+
+.first p {
+    font-family: system-ui, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin: 0;
+    max-width: 480px;
 }
-.first button{
-    border: none;
-    background: #0a75c1;
+
+
+.first button {
+    background: #3b82f6;
     color: white;
-    padding: 15px 32px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.875rem 2rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 
 }
-.first button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 
+
+.first button:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+
+}
+
+.first button:active {
+    transform: translateY(0);
+}
+
+
+@media (max-width: 640px) {
+    .first h1 {
+        font-size: 2.5rem;
+    }
+
+    .first p {
+        font-size: 1rem;
+    }
 }
