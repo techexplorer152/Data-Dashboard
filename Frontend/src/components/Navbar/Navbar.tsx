@@ -1,6 +1,10 @@
-import styles from './Navbar.modue.css'
+import styles from './Navbar.module.css'
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import reactLogo from './img/Data-Dashboard222.png'
 
  function Navbar() {
+     const [open, setOpen] = useState(false);
     return (
         <header className={styles.container}>
             <Link to="/" aria-label="Go to homepage">
@@ -22,12 +26,11 @@ import styles from './Navbar.modue.css'
 
             <nav className={`${styles.navLinks} ${open ? styles.open : ''}`}>
                 <Link to="/">Home</Link>
-                <Link to="/">p1</Link>
-                <Link to="/">p2</Link>
-                <Link to="/">p3</Link>
+                <Link to="/services">Services</Link>
+                <Link to="/about">About</Link>
+                <Link to="/contact">Contacts</Link>
             </nav>
         </header>
     )
  }
-
- export default Navbar;
+ export default Navbar
