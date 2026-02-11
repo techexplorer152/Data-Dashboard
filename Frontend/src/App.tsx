@@ -14,10 +14,6 @@ function App() {
 
             <section >
                 <Background />
-                <div>
-                    <h1>Hero Section</h1>
-                    <p>Particles appear behind me</p>
-                </div>
             </section>
 
 
