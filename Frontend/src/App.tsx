@@ -15,6 +15,7 @@ function App() {
             <section >
                 <Background />
             </section>
+            <Footer/>
 
 
 

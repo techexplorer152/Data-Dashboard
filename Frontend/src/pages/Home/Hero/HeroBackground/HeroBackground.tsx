@@ -1,32 +1,36 @@
 import { Edges } from "@react-three/drei"
 import styles from './HeroBackground.module.css'
-import { Canvas, useFrame,useLoader } from "@react-three/fiber"
-import {useEffect, useRef, useState} from "react"
+import { Canvas, useFrame, useLoader } from "@react-three/fiber"
+import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
 import { OrbitControls, Stars } from "@react-three/drei"
 import EarthImg from './Globe/img/earth2.jpg'
 import Globe from './Globe/Globe'
 import { Suspense } from "react"
-
-
+import Card from './FloatingCards/FloatingCards'
 
 function HeroBackground() {
+    const globeRef = useRef<THREE.Mesh>(null!)
+
     return (
         <div className={styles.container}>
-
             <div className={styles.canvasWrapper}>
-                <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+                <Canvas
+                    style={{ width: "100%", height: "100%" }}
+                    camera={{ position: [0, 0, 10], fov: 45 }}>
                     <ambientLight intensity={1.5} />
                     <pointLight position={[10, 10, 10]} />
 
                     <Suspense fallback={null}>
-                        <Globe />
+                        <Globe ref={globeRef} />
+                        <Card globeRef={globeRef} />
                     </Suspense>
 
                     <OrbitControls
                         rotateSpeed={0.4}
                         enablePan={false}
-                        enableZoom={true}
+                        enableRotate={false}
+                        enableZoom={false}
                         minDistance={5}
                         maxDistance={15}
                         autoRotate={false}
@@ -36,7 +40,6 @@ function HeroBackground() {
                 </Canvas>
             </div>
 
-
             <div className={styles.uiOverlay}>
                 <header className={styles.header}>
                     <h1>NETWORK<span>_CORE</span></h1>
@@ -44,7 +47,6 @@ function HeroBackground() {
                 </header>
 
                 <main className={styles.mainContent}>
-
                     <div className={styles.glassCard}>
                         <h3>Global Traffic</h3>
                         <p>Real-time data stream active...</p>
