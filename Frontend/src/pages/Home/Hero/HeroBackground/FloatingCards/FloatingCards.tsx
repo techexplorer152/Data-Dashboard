@@ -37,12 +37,20 @@ function Cards({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
 
 
     useFrame(({ clock }) => {
-        if (!groupRef.current || !meshRef.current) return
+        if (!meshRef.current) return
+
         const elapsedTime = clock.getElapsedTime()
         const speed = 0.5
-        groupRef.current.rotation.y = elapsedTime * speed
+        const radius = 4
+
+        const x = Math.cos(elapsedTime * speed) * radius
+        const z = Math.sin(elapsedTime * speed) * radius
+
+        meshRef.current.position.set(x, 0, z)
+
         meshRef.current.lookAt(0, 0, 0)
     })
+
 
 
     if (!texture) return null
@@ -50,7 +58,12 @@ function Cards({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
         <group ref={groupRef}>
             <mesh ref={meshRef} position={[7, 0, 0]}>
                 <planeGeometry args={[3, 2]} />
-                <meshBasicMaterial map={texture} transparent />
+                <meshBasicMaterial
+                    map={texture}
+                    transparent
+                    side={THREE.DoubleSide}
+                />
+
             </mesh>
         </group>
     )
