@@ -1,89 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Connect With Me</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #0f172a;                /* dark navy for contrast */
-            color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Finance HUD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --neon-cyan: #00f2ff;
+      --glass-bg: rgba(10, 25, 41, 0.6);
+      --border-glow: rgba(0, 242, 255, 0.3);
+    }
 
-        .card {
-            background: rgba(20, 184, 166, 0.08);   /* subtle teal tint */
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(20, 184, 166, 0.25);
-            border-radius: 24px;
-            padding: 48px 32px;
-            max-width: 480px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* Dark background with a slight radial gradient to mimic deep space/earth backdrop */
+      background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--neon-cyan);
+      overflow: hidden;
+    }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-        }
+    /* The Main Card */
+    .hud-card {
+      width: 550px;
+      padding: 30px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glow);
+      border-radius: 4px; /* Sci-fi usually uses sharp or very slight radii */
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 242, 255, 0.05);
+      position: relative;
+      clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); /* Beveled corners */
+    }
 
-        h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin: 0 0 16px;
-            color: #14b8a6;                    /* teal accent */
-        }
+    /* Header Style */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border-glow);
+      padding-bottom: 10px;
+    }
 
-        p {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            margin: 0 0 32px;
-            color: #94a3b8;
-        }
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      margin: 0;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
 
-        .heart {
-            color: #f43f5e;
-            font-size: 1.3rem;
-        }
+    /* Layout Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
 
-        .btn {
-            display: inline-block;
-            background: #14b8a6;
-            color: white;
-            font-weight: 600;
-            font-size: 1.125rem;
-            padding: 16px 40px;
-            border-radius: 9999px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
-        }
+    /* Mock Charts using CSS gradients */
+    .chart-box {
+      border-left: 2px solid var(--neon-cyan);
+      height: 100px;
+      position: relative;
+      background: linear-gradient(transparent 90%, rgba(0, 242, 255, 0.1) 100%);
+      margin-top: 10px;
+    }
 
-        .btn:hover {
-            background: #0f766e;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(20, 184, 166, 0.45);
-        }
-    </style>
+    .wave-line {
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/1999/xlink" viewBox="0 0 100 20"><path d="M0 15 Q 25 5 50 15 T 100 15" stroke="%2300f2ff" fill="transparent" stroke-width="0.5"/></svg>');
+      background-size: contain;
+      opacity: 0.8;
+    }
+
+    /* Data List */
+    .stats-list {
+      list-style: none;
+      padding: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .stats-list li {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stats-list span {
+      color: #fff;
+      text-shadow: 0 0 5px var(--neon-cyan);
+    }
+
+    /* Footer Icons */
+    .footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      opacity: 0.7;
+    }
+
+    /* Decorative "Scanning" Animation */
+    .scanline {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: rgba(0, 242, 255, 0.2);
+      animation: scan 4s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Let’s connect!</h1>
-    <p>View my portfolio • Feel free to reach out with questions, offers, collaborations — I'm open to anyone! <span class="heart">♥</span></p>
-    <a href="YOUR_LINKEDIN_URL_HERE" class="btn" target="_blank">
-        View my LinkedIn
-    </a>
+<div class="hud-card">
+  <div class="scanline"></div>
+
+  <div class="header">
+    <i data-lucide="component" size="24"></i>
+    <h1>GLOBAL FINANCE</h1>
+  </div>
+
+  <div class="grid">
+    <div class="left-col">
+      <div class="chart-box">
+        <div class="wave-line"></div>
+      </div>
+      <div style="margin-top:15px; font-size: 0.8rem; opacity: 0.6;">
+        SYSTEM STATUS: ACTIVE<br>
+        ENCRYPTION: AES-256
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+        <i data-lucide="users"></i>
+        <i data-lucide="user"></i>
+        <i data-lucide="baby"></i>
+      </div>
+      <ul class="stats-list">
+        <li>AUD <span>80,30.00N</span></li>
+        <li>EUR <span>20,20.00N</span></li>
+        <li>KOR <span>99,99.92T</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <i data-lucide="shield-check" size="18"></i>
+    <i data-lucide="activity" size="18"></i>
+    <i data-lucide="globe" size="18"></i>
+  </div>
 </div>
 
+<script>
+  // Initialize Icons
+  lucide.createIcons();
+</script>
 </body>
 </html>

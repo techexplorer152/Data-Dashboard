@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Finance Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      /* Modern Professional Palette */
+      --card-bg: rgba(30, 41, 59, 0.7); /* Slate-800 with opacity */
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc; /* Slate-50 */
+      --text-muted: #94a3b8; /* Slate-400 */
+      --accent-blue: #38bdf8; /* Sky-400 */
+      --accent-green: #4ade80; /* Green-400 */
+      --graph-gradient: linear-gradient(180deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0) 100%);
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Deep Professional Background */
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+    }
+
+    /* --- THE CARD --- */
+    .finance-card {
+      width: 480px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px); /* Premium Glass Effect */
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px; /* Smooth, modern rounding */
+      padding: 32px;
+      box-shadow:
+              0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 8px 10px -6px rgba(0, 0, 0, 0.1); /* Soft, elevated shadow */
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .finance-card:hover {
+      transform: translateY(-5px); /* Subtle interaction */
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* --- HEADER --- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      background: rgba(56, 189, 248, 0.1); /* Subtle blue tint */
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-blue);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--accent-green);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* --- CONTENT GRID --- */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    /* --- CHART SECTION --- */
+    .chart-container {
+      position: relative;
+      height: 120px;
+      width: 100%;
+    }
+
+    .chart-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+
+    .chart-sublabel {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* SVG Graph Styling */
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    path.line {
+      fill: none;
+      stroke: var(--accent-blue);
+      stroke-width: 3;
+      stroke-linecap: round;
+      filter: drop-shadow(0 4px 6px rgba(56, 189, 248, 0.25)); /* Soft glow */
+    }
+
+    path.area {
+      fill: url(#gradient);
+      stroke: none;
+    }
+
+    /* --- METRICS LIST --- */
+    .metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .metric-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .metric-name {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-feature-settings: "tnum"; /* Tabular numbers for alignment */
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="finance-card">
+
+  <div class="header">
+    <div class="title-group">
+      <div class="icon-box">
+        <i data-lucide="wallet" size="20"></i>
+      </div>
+      <div>
+        <h2>Global Assets</h2>
+        <span class="chart-sublabel">Real-time overview</span>
+      </div>
+    </div>
+    <div class="badge">
+      <i data-lucide="arrow-up-right" size="14"></i>
+      <span>+2.4%</span>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="chart-container">
+      <div style="position: absolute; top: -10px; z-index: 2;">
+        <p class="chart-label">$84,320</p>
+      </div>
+
+      <svg viewBox="0 0 100 50" preserveAspectRatio="none" style="margin-top: 30px;">
+        <defs>
+          <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path class="area" d="M0,50 L0,35 Q25,10 50,30 T100,15 L100,50 Z" />
+        <path class="line" d="M0,35 Q25,10 50,30 T100,15" />
+
+        <circle cx="100" cy="15" r="3" fill="#fff" stroke="#38bdf8" stroke-width="2" />
+      </svg>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-item">
+        <span class="metric-name">AUD</span>
+        <span class="metric-value">80,300.00</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-name">EUR</span>
+        <span class="metric-value">20,200.00</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-name">USD</span>
+        <span class="metric-value">45,150.00</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

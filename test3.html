@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Holographic Finance HUD</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --hud-color: #00eaff; /* The specific cyan from your image */
+      --hud-bg: rgba(0, 20, 40, 0.85);
+      --grid-line: rgba(0, 234, 255, 0.1);
+    }
+
+    body {
+      background-color: #000;
+      background-image:
+              linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+              url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); /* Earth background */
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* --- THE CARD CONTAINER --- */
+    .holo-card {
+      width: 600px;
+      height: 380px;
+      border: 2px solid var(--hud-color);
+      border-radius: 20px;
+      background: var(--hud-bg);
+      position: relative;
+      box-shadow:
+              0 0 15px var(--hud-color),
+              inset 0 0 20px rgba(0, 234, 255, 0.2); /* Outer and Inner Glow */
+      padding: 25px;
+      color: var(--hud-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Decorative corner accents */
+    .holo-card::before, .holo-card::after {
+      content: '';
+      position: absolute;
+      width: 100px; /* Curve width */
+      height: 100px;
+      border: 2px solid transparent;
+      border-radius: 20px;
+      pointer-events: none;
+    }
+
+    /* Top Left & Bottom Right accents */
+    .holo-card::before {
+      top: -10px; left: -10px;
+      border-top: 2px solid var(--hud-color);
+      border-left: 2px solid var(--hud-color);
+    }
+    .holo-card::after {
+      bottom: -10px; right: -10px;
+      border-bottom: 2px solid var(--hud-color);
+      border-right: 2px solid var(--hud-color);
+    }
+
+    /* --- HEADER --- */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 234, 255, 0.3);
+      padding-bottom: 10px;
+    }
+
+    .diamond-icon {
+      font-size: 1.5rem;
+      border: 2px solid var(--hud-color);
+      padding: 5px;
+      transform: rotate(45deg); /* Making the square a diamond */
+      box-shadow: 0 0 10px var(--hud-color);
+      width: 15px; height: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px var(--hud-color);
+    }
+
+    /* --- MAIN GRID CONTENT --- */
+    .content {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr; /* Left is wider */
+      gap: 20px;
+      height: 100%;
+    }
+
+    /* LEFT COLUMN: CHARTS */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* The 3 Bars */
+    .bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .bar {
+      height: 12px;
+      background: linear-gradient(90deg, var(--hud-color) 0%, transparent 100%);
+      box-shadow: 0 0 5px var(--hud-color);
+    }
+
+    /* The Jagged Area Graph (Pure CSS) */
+    .area-graph {
+      flex-grow: 1;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(0,234,255,0.4) 0%, transparent 100%);
+      /* This polygon creates the jagged mountain shape */
+      clip-path: polygon(
+              0% 100%, 0% 80%, 10% 70%, 20% 85%, 30% 60%,
+              40% 65%, 50% 30%, 60% 50%, 70% 40%, 80% 45%,
+              90% 20%, 100% 30%, 100% 100%
+      );
+      position: relative;
+      border-top: 2px solid var(--hud-color); /* The line on top of the area */
+    }
+
+    /* RIGHT COLUMN: DATA */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: right;
+    }
+
+    .family-icons {
+      font-size: 2rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      text-shadow: 0 0 10px var(--hud-color);
+    }
+
+    .data-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    /* The Circular Widgets at bottom right */
+    .circles-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .circle-widget {
+      width: 50px;
+      height: 50px;
+      border: 2px solid var(--hud-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px var(--hud-color);
+      position: relative;
+    }
+
+    /* Small segment line inside circle */
+    .circle-widget::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      width: 20px;
+      height: 5px;
+      background: #000; /* Masking the border to look like a gap */
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="holo-card">
+  <div class="header">
+    <div class="diamond-icon"></div> <h1>GLOBAL FINANCE</h1>
+  </div>
+
+  <div class="content">
+    <div class="left-col">
+      <div class="bar-group">
+        <div class="bar" style="width: 60%;"></div>
+        <div class="bar" style="width: 80%;"></div>
+        <div class="bar" style="width: 40%;"></div>
+      </div>
+
+      <div style="position: relative; height: 150px; border-bottom: 1px solid var(--hud-color); border-left: 1px solid var(--hud-color);">
+        <div class="area-graph" style="height: 100%;"></div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="family-icons">
+        <i class="fas fa-male"></i>
+        <i class="fas fa-child"></i>
+        <i class="fas fa-female"></i>
+      </div>
+
+      <div class="data-text">
+        AUD 30,300.00N<br>
+        EUR 20,200.00N<br>
+        KOR 09,992.92T
+      </div>
+
+      <svg width="100%" height="40" style="overflow:visible">
+        <path d="M0 30 Q 20 40 40 20 T 80 10 T 150 30" fill="none" stroke="#00eaff" stroke-width="2" />
+      </svg>
+
+      <div class="circles-container">
+        <div class="circle-widget">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="circle-widget">
+          <i class="fas fa-heartbeat"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -20,9 +20,12 @@ function Cards({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
 
         hiddenDiv.innerHTML = `
   <div class="${styles.container}">
+   
+  
+  
     <h3>hi</h3>
     <p>This is a card!</p>
-    <img src="${testcard}" alt="icon" />
+    
   </div>
     `
 
