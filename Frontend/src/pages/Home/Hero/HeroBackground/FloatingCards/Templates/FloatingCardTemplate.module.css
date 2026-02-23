@@ -1,0 +1,149 @@
+.cardContainer {
+    width: 900px;
+    height: auto;
+    min-height: 500px;
+    background: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    color: #1e293b;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.title {
+    font-size: 32px;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #0f172a;
+    text-align: left;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background: #e2e8f0;
+    width: 100%;
+    margin: 24px 0;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    gap: 48px;
+}
+
+.chartSection {
+    flex: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+.legend {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #64748b;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.bgSeries1 { background: #2b5a7d; }
+.bgSeries2 { background: #46a3b1; }
+.bgSeries3 { background: #87e3f1; }
+
+.svgChart {
+    width: 100%;
+    flex: 1;
+    min-height: 240px;
+    border-bottom: 2px solid #e2e8f0;
+    border-left: 2px solid #e2e8f0;
+    margin-bottom: 12px;
+}
+
+.xAxis {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    color: #94a3b8;
+    padding: 0 10px;
+}
+
+.statsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.row:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+}
+
+.iconContainer {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flagImg {
+    width: 32px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.valuePrimary {
+    color: #2b5a7d;
+    font-weight: 700;
+    font-size: 18px;
+    flex: 1;
+    text-align: right;
+}
+
+.valueSecondary {
+    color: #46a3b1;
+    font-weight: 700;
+    font-size: 18px;
+    width: 60px;
+    text-align: right;
+}
+
+.verticalLine {
+    width: 2px;
+    height: 20px;
+    background: #cbd5e1;
+    margin: 0 16px;
+    border-radius: 2px;
+}

@@ -8,12 +8,17 @@ import EarthImg from './Globe/img/earth2.jpg'
 import Globe from './Globe/Globe'
 import { Suspense } from "react"
 import Card from './FloatingCards/FloatingCards'
+import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate'
 
 function HeroBackground() {
     const globeRef = useRef<THREE.Mesh>(null!)
 
     return (
         <div className={styles.container}>
+            <div style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}>
+                <FloatingCardTemplate />
+            </div>
+
             <div className={styles.canvasWrapper}>
                 <Canvas
                     style={{ width: "100%", height: "100%" }}

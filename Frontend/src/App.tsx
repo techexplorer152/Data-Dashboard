@@ -4,7 +4,8 @@ import Background from './pages/Home/Hero/HeroBackground/HeroBackground.tsx'
 
 import Footer from './components/Footer/footer'
 import Home from './pages/Home/Home.tsx'
-import Try from './pages/Home/Hero/HeroBackground/FloatingCards/try'
+
+import Template from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/FloatingCardTemplate'
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
                 <Background />
             </section>
             <Footer/>
-            <Try/>
+            <Template/>
 
 
 

@@ -1,75 +1,95 @@
-import styles from "./FloatingCards.module.css"
 import * as THREE from "three"
-import testcard from "./img/img.png"
 import html2canvas from "html2canvas"
 import { useRef, useEffect, useState } from "react"
-import { useFrame } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 
-function Cards({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
-    const groupRef = useRef<THREE.Group>(null!)
-    const meshRef = useRef<THREE.Mesh>(null!)
+function Card({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
+    const meshRef = useRef<THREE.Group>(null!)
     const [texture, setTexture] = useState<THREE.Texture | null>(null)
+    const [isFocused, setIsFocused] = useState(false)
 
+    // Access camera to ensure we face it perfectly when flat
+    const { camera } = useThree()
 
     useEffect(() => {
-        const hiddenDiv = document.createElement("div")
-        hiddenDiv.style.position = "absolute"
-        hiddenDiv.style.top = "-9999px"
-        hiddenDiv.style.width = "500px"
-        document.body.appendChild(hiddenDiv)
-
-        hiddenDiv.innerHTML = `
-  <div class="${styles.container}">
-   
-  
-  
-    <h3>hi</h3>
-    <p>This is a card!</p>
-    
-  </div>
-    `
-
-        html2canvas(hiddenDiv).then((canvas) => {
-            const tex = new THREE.CanvasTexture(canvas)
-            tex.needsUpdate = true
-            tex.colorSpace = THREE.SRGBColorSpace
-            setTexture(tex)
-            document.body.removeChild(hiddenDiv)
-        })
+        const captureTexture = async () => {
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            const element = document.getElementById("floating-card-render")
+            if (element) {
+                try {
+                    const canvas = await html2canvas(element, {
+                        backgroundColor: null,
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true
+                    })
+                    const tex = new THREE.CanvasTexture(canvas)
+                    tex.anisotropy = 16
+                    tex.colorSpace = THREE.SRGBColorSpace
+                    tex.needsUpdate = true
+                    setTexture(tex)
+                } catch (error) { console.error(error) }
+            }
+        }
+        captureTexture()
     }, [])
 
-
-    useFrame(({ clock }) => {
+    useFrame(({ clock }, delta) => {
         if (!meshRef.current) return
 
-        const elapsedTime = clock.getElapsedTime()
-        const speed = 0.5
-        const radius = 4
+        if (!isFocused) {
+            // --- ORBITING LOGIC ---
+            const elapsedTime = clock.getElapsedTime()
+            const speed = 0.2
+            const radius = 6
 
-        const x = Math.cos(elapsedTime * speed) * radius
-        const z = Math.sin(elapsedTime * speed) * radius
+            const targetX = Math.cos(elapsedTime * speed) * radius
+            const targetZ = Math.sin(elapsedTime * speed) * radius
+            const targetY = Math.sin(elapsedTime * 0.5) * 0.3
 
-        meshRef.current.position.set(x, 0, z)
+            // Smoothly move back to orbit if coming from focused state
+            meshRef.current.position.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.1)
 
-        meshRef.current.lookAt(0, 0, 0)
+            // Look at center
+            const lookAtPos = new THREE.Vector3(0, 0, 0)
+            meshRef.current.lookAt(lookAtPos)
+        } else {
+            // --- FOCUSED (FLAT) LOGIC ---
+            // Position the card directly in front of the camera
+            // 0, 0, 5 is a good spot for a camera at 0, 0, 10
+            const targetPos = new THREE.Vector3(0, 0, 5)
+            meshRef.current.position.lerp(targetPos, 0.1)
+
+            // Reset rotation to face camera (flat)
+            meshRef.current.quaternion.slerp(camera.quaternion, 0.1)
+        }
     })
 
-
-
     if (!texture) return null
-    return (
-        <group ref={groupRef}>
-            <mesh ref={meshRef} position={[7, 0, 0]}>
-                <planeGeometry args={[3, 2]} />
-                <meshBasicMaterial
-                    map={texture}
-                    transparent
-                    side={THREE.DoubleSide}
-                />
 
+    return (
+        <group
+            ref={meshRef}
+            onClick={(e) => {
+                e.stopPropagation() // Prevent clicking through to the globe
+                setIsFocused(!isFocused)
+            }}
+            onPointerOver={() => (document.body.style.cursor = 'pointer')}
+            onPointerOut={() => (document.body.style.cursor = 'auto')}
+        >
+            {/* Front Side */}
+            <mesh>
+                <planeGeometry args={[4.5, 2.5]} />
+                <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
+            </mesh>
+
+            {/* Back Side */}
+            <mesh rotation={[0, Math.PI, 0]}>
+                <planeGeometry args={[4.5, 2.5]} />
+                <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
             </mesh>
         </group>
     )
 }
 
-export default Cards
+export default Card
