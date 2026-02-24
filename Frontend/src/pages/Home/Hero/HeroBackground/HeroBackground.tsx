@@ -1,10 +1,9 @@
 import { Edges } from "@react-three/drei"
 import styles from './HeroBackground.module.css'
-import { Canvas, useFrame, useLoader } from "@react-three/fiber"
-import { useEffect, useRef, useState } from "react"
+import { Canvas } from "@react-three/fiber"
+import { useRef } from "react"
 import * as THREE from "three"
 import { OrbitControls, Stars } from "@react-three/drei"
-import EarthImg from './Globe/img/earth2.jpg'
 import Globe from './Globe/Globe'
 import { Suspense } from "react"
 import Card from './FloatingCards/FloatingCards'
@@ -13,22 +12,47 @@ import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate
 function HeroBackground() {
     const globeRef = useRef<THREE.Mesh>(null!)
 
+    const cards = [
+        { id: "card-1", radius: 6, speed: 0.2 },
+        { id: "card-2", radius: 6, speed: 0.2 },
+        { id: "card-3", radius: 6, speed: 0.2 }
+    ]
+
     return (
         <div className={styles.container}>
-            <div style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}>
-                <FloatingCardTemplate />
-            </div>
+
+            {/* Hidden templates: one per card */}
+            {cards.map(card => (
+                <div
+                    key={card.id}
+                    id={card.id}
+                    style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}
+                >
+                    <FloatingCardTemplate />
+                </div>
+            ))}
 
             <div className={styles.canvasWrapper}>
                 <Canvas
                     style={{ width: "100%", height: "100%" }}
-                    camera={{ position: [0, 0, 10], fov: 45 }}>
+                    camera={{ position: [0, 0, 10], fov: 45 }}
+                >
                     <ambientLight intensity={1.5} />
                     <pointLight position={[10, 10, 10]} />
 
                     <Suspense fallback={null}>
                         <Globe ref={globeRef} />
-                        <Card globeRef={globeRef} />
+
+                        {cards.map((card, index) => (
+                            <Card
+                                key={card.id}
+                                globeRef={globeRef}
+                                templateId={card.id}
+                                radius={card.radius}
+                                speed={card.speed}
+                                phaseOffset={(index / cards.length) * Math.PI * 2}
+                            />
+                        ))}
                     </Suspense>
 
                     <OrbitControls

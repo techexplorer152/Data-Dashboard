@@ -3,18 +3,24 @@ import html2canvas from "html2canvas"
 import { useRef, useEffect, useState } from "react"
 import { useFrame, useThree } from "@react-three/fiber"
 
-function Card({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
+interface CardProps {
+    globeRef: React.MutableRefObject<THREE.Mesh>
+    templateId: string
+    radius: number
+    speed: number
+    phaseOffset: number
+}
+
+function Card({ globeRef, templateId, radius, speed, phaseOffset }: CardProps) {
     const meshRef = useRef<THREE.Group>(null!)
     const [texture, setTexture] = useState<THREE.Texture | null>(null)
     const [isFocused, setIsFocused] = useState(false)
-
-    // Access camera to ensure we face it perfectly when flat
     const { camera } = useThree()
 
     useEffect(() => {
         const captureTexture = async () => {
             await new Promise((resolve) => setTimeout(resolve, 1000))
-            const element = document.getElementById("floating-card-render")
+            const element = document.getElementById(templateId)
             if (element) {
                 try {
                     const canvas = await html2canvas(element, {
@@ -28,39 +34,29 @@ function Card({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
                     tex.colorSpace = THREE.SRGBColorSpace
                     tex.needsUpdate = true
                     setTexture(tex)
-                } catch (error) { console.error(error) }
+                } catch (error) {
+                    console.error(error)
+                }
             }
         }
         captureTexture()
-    }, [])
+    }, [templateId])
 
-    useFrame(({ clock }, delta) => {
+    useFrame(({ clock }) => {
         if (!meshRef.current) return
 
         if (!isFocused) {
-            // --- ORBITING LOGIC ---
             const elapsedTime = clock.getElapsedTime()
-            const speed = 0.2
-            const radius = 6
-
-            const targetX = Math.cos(elapsedTime * speed) * radius
-            const targetZ = Math.sin(elapsedTime * speed) * radius
+            const angle = elapsedTime * speed + phaseOffset
+            const targetX = Math.cos(angle) * radius
+            const targetZ = Math.sin(angle) * radius
             const targetY = Math.sin(elapsedTime * 0.5) * 0.3
 
-            // Smoothly move back to orbit if coming from focused state
             meshRef.current.position.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.1)
-
-            // Look at center
-            const lookAtPos = new THREE.Vector3(0, 0, 0)
-            meshRef.current.lookAt(lookAtPos)
+            meshRef.current.lookAt(new THREE.Vector3(0, 0, 0))
         } else {
-            // --- FOCUSED (FLAT) LOGIC ---
-            // Position the card directly in front of the camera
-            // 0, 0, 5 is a good spot for a camera at 0, 0, 10
             const targetPos = new THREE.Vector3(0, 0, 5)
             meshRef.current.position.lerp(targetPos, 0.1)
-
-            // Reset rotation to face camera (flat)
             meshRef.current.quaternion.slerp(camera.quaternion, 0.1)
         }
     })
@@ -71,19 +67,17 @@ function Card({ globeRef }: { globeRef: React.MutableRefObject<THREE.Mesh> }) {
         <group
             ref={meshRef}
             onClick={(e) => {
-                e.stopPropagation() // Prevent clicking through to the globe
+                e.stopPropagation()
                 setIsFocused(!isFocused)
             }}
             onPointerOver={() => (document.body.style.cursor = 'pointer')}
             onPointerOut={() => (document.body.style.cursor = 'auto')}
         >
-            {/* Front Side */}
             <mesh>
                 <planeGeometry args={[4.5, 2.5]} />
                 <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
             </mesh>
 
-            {/* Back Side */}
             <mesh rotation={[0, Math.PI, 0]}>
                 <planeGeometry args={[4.5, 2.5]} />
                 <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
