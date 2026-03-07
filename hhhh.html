@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Team Match Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef1f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            width: 360px;
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .competition {
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0;
+        }
+
+        .team {
+            width: 40%;
+            text-align: center;
+        }
+
+        .team img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+
+        .vs {
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px;
+            background: #f7f7f7;
+            border-radius: 12px;
+        }
+
+        .details {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .details div {
+            margin-bottom: 5px;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 8px;
+            text-align: center;
+            border-radius: 10px;
+            background: #e6ffe6;
+            color: #1a7a1a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h2>Matchday 3</h2>
+        <div class="competition">UEFA Nations League</div>
+    </div>
+
+    <div class="teams">
+        <div class="team">
+            <img src="https://flagcdn.com/w80/de.png" alt="Germany Flag">
+            Germany
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+            <img src="https://flagcdn.com/w80/it.png" alt="Italy Flag">
+            Italy
+        </div>
+    </div>
+
+    <div class="score">1 : 1</div>
+
+    <div class="details">
+        <div>Date: 22 Mar 2026</div>
+        <div>Venue: Allianz Arena</div>
+        <div>Kickoff: 20:45</div>
+    </div>
+
+    <div class="status">Finished</div>
+</div>
+
+</body>
+</html>
+
