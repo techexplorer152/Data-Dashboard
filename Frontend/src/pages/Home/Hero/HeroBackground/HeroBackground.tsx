@@ -1,34 +1,31 @@
-import { Edges } from "@react-three/drei"
-import styles from './HeroBackground.module.css'
-import { Canvas } from "@react-three/fiber"
-import { useRef } from "react"
-import * as THREE from "three"
-import { OrbitControls, Stars } from "@react-three/drei"
-import Globe from './Globe/Globe'
-import { Suspense } from "react"
-import Card from './FloatingCards/FloatingCards'
-import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate'
+import { useRef, Suspense } from "react";
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import Globe from './Globe/Globe';
+import Card from './FloatingCards/FloatingCards';
+import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate';
+import SportsCard from './FloatingCards/Templates/SportsCard';
+import styles from './HeroBackground.module.css';
 
 function HeroBackground() {
-    const globeRef = useRef<THREE.Mesh>(null!)
+    const globeRef = useRef<THREE.Mesh>(null!);
 
     const cards = [
-        { id: "card-1", radius: 6, speed: 0.2 },
-        { id: "card-2", radius: 6, speed: 0.2 },
-        { id: "card-3", radius: 6, speed: 0.2 }
-    ]
+        { id: "card-1", radius: 6, speed: 0.2, type: 'economy' },
+        { id: "card-2", radius: 6, speed: 0.2, type: 'sports' },
+        { id: "card-3", radius: 6, speed: 0.2, type: 'economy' }
+    ];
 
     return (
         <div className={styles.container}>
-
-            {/* Hidden templates: one per card */}
             {cards.map(card => (
                 <div
                     key={card.id}
                     id={card.id}
                     style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}
                 >
-                    <FloatingCardTemplate />
+                    {card.type === 'sports' ? <SportsCard /> : <FloatingCardTemplate />}
                 </div>
             ))}
 
@@ -83,7 +80,7 @@ function HeroBackground() {
                 </main>
             </div>
         </div>
-    )
+    );
 }
 
-export default HeroBackground
+export default HeroBackground;
