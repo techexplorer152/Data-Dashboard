@@ -6,6 +6,7 @@ import Globe from './Globe/Globe';
 import Card from './FloatingCards/FloatingCards';
 import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate';
 import SportsCard from './FloatingCards/Templates/SportsCard';
+import HealthCard from './FloatingCards/Templates/HealthCard';
 import styles from './HeroBackground.module.css';
 
 function HeroBackground() {
@@ -14,7 +15,7 @@ function HeroBackground() {
     const cards = [
         { id: "card-1", radius: 6, speed: 0.2, type: 'economy' },
         { id: "card-2", radius: 6, speed: 0.2, type: 'sports' },
-        { id: "card-3", radius: 6, speed: 0.2, type: 'economy' }
+        { id: "card-3", radius: 6, speed: 0.2, type: 'health' }
     ];
 
     return (
@@ -25,7 +26,9 @@ function HeroBackground() {
                     id={card.id}
                     style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}
                 >
-                    {card.type === 'sports' ? <SportsCard /> : <FloatingCardTemplate />}
+                    {card.type === 'sports' && <SportsCard />}
+                    {card.type === 'economy' && <FloatingCardTemplate />}
+                    {card.type === 'health' && <HealthCard />}
                 </div>
             ))}
 
