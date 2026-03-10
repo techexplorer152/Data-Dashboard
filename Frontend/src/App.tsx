@@ -1,6 +1,7 @@
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
-import Background from './pages/Home/Hero/HeroBackground/HeroBackground.tsx'
+
+import Hero from './pages/Home/Hero/Hero'
 
 import Footer from './components/Footer/footer'
 import Home from './pages/Home/Home.tsx'
@@ -16,7 +17,7 @@ function App() {
 
 
             <section >
-                <Background />
+                <Hero />
             </section>
             <Footer/>
             <Template/>
