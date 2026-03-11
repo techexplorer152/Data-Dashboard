@@ -1,0 +1,190 @@
+.heroWrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #020617;
+    overflow: hidden;
+    color: white;
+}
+
+.backgroundLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.gridOverlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+            linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.scanLine {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    z-index: 3;
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% { top: -10%; }
+    100% { top: 110%; }
+}
+
+.hudContainer {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 350px 1fr 350px;
+    grid-template-rows: 100px 1fr 100px;
+    padding: 40px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.header, .sidebarLeft, .sidebarRight, .centerContent, .footer {
+    pointer-events: auto;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.logo span {
+    color: #3b82f6;
+}
+
+.statusPill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.7);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+}
+
+.centerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.heroTitle {
+    font-size: 5.5rem;
+    font-weight: 900;
+    line-height: 0.85;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.heroTitle span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+}
+
+.heroSubtitle {
+    margin-top: 25px;
+    max-width: 500px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+.terminalCard {
+    background: rgba(15, 23, 42, 0.7);
+    border-left: 3px solid #3b82f6;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.terminalLine span {
+    color: #3b82f6;
+}
+
+.uplinkText {
+    color: #3b82f6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    margin-top: 10px;
+}
+
+.statPill {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.statLabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #3b82f6;
+    display: block;
+}
+
+.statValue {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.btnGroup {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    padding: 16px 32px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.btnPrimary {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.btnSecondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer {
+    grid-column: 1 / 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #475569;
+}
