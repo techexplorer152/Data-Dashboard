@@ -69,19 +69,19 @@ function HeroBackground() {
                 </Canvas>
             </div>
 
-            <div className={styles.uiOverlay}>
-                <header className={styles.header}>
-                    <h1>NETWORK<span>_CORE</span></h1>
-                    <div className={styles.statusBadge}>SYSTEM ONLINE</div>
-                </header>
+            {/*<div className={styles.uiOverlay}>
+            <header className={styles.header}>
+                <h1>NETWORK<span>_CORE</span></h1>
+                <div className={styles.statusBadge}>SYSTEM ONLINE</div>
+            </header>
 
-                <main className={styles.mainContent}>
-                    <div className={styles.glassCard}>
-                        <h3>Global Traffic</h3>
-                        <p>Real-time data stream active...</p>
-                    </div>
-                </main>
-            </div>
+            <main className={styles.mainContent}>
+                <div className={styles.glassCard}>
+                    <h3>Global Traffic</h3>
+                    <p>Real-time data stream active...</p>
+                </div>
+            </main>
+        </div>*/}
         </div>
     );
 }
