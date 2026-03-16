@@ -1,33 +1,30 @@
-import './App.css'
-import Navbar from './components/Navbar/Navbar'
-
-import Hero from './pages/Home/Hero/Hero'
-
-import Footer from './components/Footer/footer'
-import Home from './pages/Home/Home.tsx'
-
-import Finance from './pages/Finance Page/Finance'
-
-import Template from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/FloatingCardTemplate'
-import Sports from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/SportsCard'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Hero from './pages/Home/Hero/Hero';
+import Finance from './pages/Finance Page/Finance';
+import Footer from './components/Footer/footer';
 
 function App() {
-
-
     return (
-        <div>
+        <Router>
+            <div className="app-container">
+                <Routes>
+
+                    <Route path="/" element={<Hero />} />
 
 
-            <section >
-                <Hero />
-            </section>
-            <Finance/>
-            <Footer/>
-
-
-
-        </div>
-    )
+                    <Route
+                        path="/finance"
+                        element={
+                            <>
+                                <Finance />
+                                <Footer />
+                            </>
+                        }
+                    />
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
-export default App
+export default App;
