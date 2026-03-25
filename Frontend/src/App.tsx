@@ -3,6 +3,7 @@ import Hero from './pages/Home/Hero/Hero';
 import Finance from './pages/Finance Page/Finance';
 import Footer from './components/Footer/footer';
 import Navbar from './components/Navbar/Navbar';
+import Home from './pages/Home/Home'
 
 function App() {
     return (
@@ -10,7 +11,7 @@ function App() {
             <Navbar />
 
             <Routes>
-                <Route path="/" element={<Hero />} />
+                <Route path="/" element={<Home />} />
 
                 <Route
                     path="/finance"
