@@ -37,7 +37,13 @@ import styles from './Contacts.module.css'
 
            </div>
            <div className={styles.right_part}>
-               <h2>test</h2>
+              <div className={styles.contact_box}>
+                  <div className={styles.input_first} style={{display:"flex",flexDirection:"row"}}>
+                      <input placeholder="Name"/>
+                      <input placeholder="Subject"/>
+                  </div>
+                  <input placeholder="Letter"/>
+              </div>
 
            </div>
 
