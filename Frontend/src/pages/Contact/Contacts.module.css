@@ -1,56 +1,182 @@
-.container{
+.container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 30px;
-    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    align-items: center;
+    min-height: 80vh;
+    padding: 60px;
+    gap: 100px;
+    background-color: #020617;
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.big_title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.big_title span {
+    color: #3b82f6;
+}
+
+.description {
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    max-width: 500px;
+}
+
+.info_grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+.contact_item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon_box {
+    width: 40px;
+    height: 40px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3b82f6;
+}
+
+.contact_item h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #475569;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.contact_item a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.contact_item a:hover {
+    color: #3b82f6;
 }
 
 .contact_box {
-    background: linear-gradient(135deg, #1e90ff, #4f46e5);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 40px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.card_header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.terminal_text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #3b82f6;
+}
+
+.status_dot {
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #3b82f6;
+}
+
+.input_group {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    padding: 40px 24px;
-    border-radius: 16px;
-    max-width: 400px;
-    margin: auto;
+    gap: 15px;
 }
 
-
-.input_first {
-    width: 100%;
+.row {
+    display: flex;
+    gap: 15px;
 }
 
-.input_first input {
+.glitch_input, .glitch_textarea {
     width: 100%;
-    padding: 12px 14px;
-    border: none;
-    border-radius: 8px;
-    background: #ffffff;
-    font-size: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px;
+    border-radius: 4px;
+    color: white;
     outline: none;
-
-
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
 }
 
-
-.input_first input:focus {
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.4),
-    0 4px 12px rgba(0,0,0,0.15);
-    transform: translateY(-1px);
+.glitch_textarea {
+    min-height: 150px;
+    resize: none;
 }
 
-
-.input_first input:hover {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+.glitch_input:focus, .glitch_textarea:focus {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
 }
 
+.send_btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 16px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
 
-.input_first input::placeholder {
-    color: #888;
+.send_btn:hover {
+    background: #2563eb;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.card_corners::before, .card_corners::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #3b82f6;
+}
+
+.card_corners::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.card_corners::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+@media (max-width: 968px) {
+    .container {
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 50px;
+    }
 }
