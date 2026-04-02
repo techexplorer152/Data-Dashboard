@@ -54,6 +54,12 @@
     color: #3b82f6;
 }
 
+.custom_icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
 .contact_item h3 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
@@ -154,6 +160,12 @@
     justify-content: center;
     gap: 10px;
     transition: all 0.3s;
+}
+
+.btn_icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
 }
 
 .send_btn:hover {
