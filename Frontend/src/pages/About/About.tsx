@@ -1,4 +1,5 @@
 import styles from './About.module.css';
+import Mission from './Mission/Mission'
 
 const About = () => {
     return (
@@ -63,6 +64,7 @@ const About = () => {
                         </div>
                     </div>
                 </div>
+                <Mission/>
             </div>
         </div>
     );
