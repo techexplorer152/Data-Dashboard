@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home'
 import About from './pages/About/About'
 import Contacts from './pages/Contact/Contacts'
+import  Services from './pages/Services/Services.jsx'
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About/>}/>
                 <Route path="/contact" element={<Contacts/>}/>
+                <Route path="/services" element={<Services/>}/>
 
                 <Route
                     path="/finance"
