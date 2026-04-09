@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import Hero from './Hero/Hero'
-
+import Text from  './Introduction/text'
 
 
 
@@ -67,6 +67,7 @@ function Home() {
                         </div>
                     </div>
                 </div>
+                <Text/>
             </div>
         </div>
 
