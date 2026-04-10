@@ -1,4 +1,6 @@
 import styles from './text.module.css';
+import PhotoOne from './img/img-lol.jpg'
+import PhotoTwo from './img/img-lol.jpg'
 
 const Text = () => {
     return (
