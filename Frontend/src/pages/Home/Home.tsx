@@ -67,8 +67,9 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <Text/>
+
             </div>
+            <Text/>
         </div>
 
     );
