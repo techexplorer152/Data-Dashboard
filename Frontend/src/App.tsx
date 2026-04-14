@@ -7,8 +7,9 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home'
 import About from './pages/About/About'
 import Contacts from './pages/Contact/Contacts'
-import  Services from './pages/Services/Services.jsx'
+import Services from './pages/Services/Services.jsx'
 import Text from './pages/Home/Introduction/text'
+import  './App.css'
 
 function App() {
     return (
