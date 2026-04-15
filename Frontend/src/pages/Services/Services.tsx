@@ -1,4 +1,5 @@
 import styles from './Services.module.css';
+import Process from './Process/Process'
 
 const Services = () => {
     return (
@@ -55,6 +56,7 @@ const Services = () => {
 
 
             <div className={styles.grid_bg}></div>
+            <Process/>
         </div>
     );
 };
