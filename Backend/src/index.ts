@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import axios from 'axios';
 
@@ -8,9 +8,8 @@ app.use(cors());
 const PORT = 5000;
 
 
-app.get('/api/system-telemetry', async (req, res) => {
+app.get('/api/system-telemetry', async (req: Request, res: Response) => {
     try {
-
         const telemetryData = {
             timestamp: new Date().toISOString(),
             status: 'OPERATIONAL',
@@ -23,8 +22,4 @@ app.get('/api/system-telemetry', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'UPLINK_CRITICAL_FAILURE' });
     }
-});
-
-app.listen(PORT, () => {
-    console.log(`[SYSTEM_ONLINE]: Relay active on http://localhost:${PORT}`);
 });
