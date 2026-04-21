@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-export function useFetch<T>(url: string) {
+export function useFetch<T>(url: string, refreshInterval: number = 5000) {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -10,7 +9,8 @@ export function useFetch<T>(url: string) {
 
         async function getData() {
             try {
-                setLoading(true);
+
+                if (!data) setLoading(true);
 
                 const res = await fetch(url);
 
@@ -19,7 +19,10 @@ export function useFetch<T>(url: string) {
                 }
 
                 const json = await res.json();
-                if (!ignore) setData(json);
+                if (!ignore) {
+                    setData(json);
+                    setError(null);
+                }
 
             } catch (err: any) {
                 if (!ignore) setError(err.message);
@@ -28,12 +31,18 @@ export function useFetch<T>(url: string) {
             }
         }
 
+
         getData();
+
+
+        const intervalId = setInterval(getData, refreshInterval);
+
 
         return () => {
             ignore = true;
+            clearInterval(intervalId);
         };
-    }, [url]);
+    }, [url, refreshInterval]);
 
     return { data, loading, error };
 }

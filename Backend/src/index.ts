@@ -23,3 +23,7 @@ app.get('/api/system-telemetry', async (req: Request, res: Response) => {
         res.status(500).json({ error: 'UPLINK_CRITICAL_FAILURE' });
     }
 });
+
+app.listen(PORT, () => {
+    console.log(`[SYSTEM_ONLINE]: Relay active on http://localhost:${PORT}`);
+});
