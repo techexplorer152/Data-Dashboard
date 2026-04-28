@@ -1,7 +1,18 @@
 import React from 'react';
 import styles from "./HealthCard.module.css";
 
-const HealthCard = () => {
+interface HealthCardProps {
+    telemetryData?: {
+        status: string;
+        system_load: string;
+        active_nodes: number;
+    };
+}
+
+const HealthCard = ({ telemetryData }: HealthCardProps) => {
+    const isOperational = telemetryData?.status === 'OPERATIONAL';
+    const loadValue = telemetryData?.system_load || "0%";
+
     return (
         <div id="health-card-render" className={styles.cardContainer}>
             <header className={styles.header}>
@@ -18,12 +29,15 @@ const HealthCard = () => {
 
             <div className={styles.expenditureBox}>
                 <div className={styles.expHeader}>
-                    <span>Public Healthcare Expenditure Today</span>
-                    <span style={{ color: '#3b82f6' }}>Target: 85%</span>
+                    <span>Network Analysis Expenditure</span>
+                    <span style={{ color: '#3b82f6' }}>Load: {loadValue}</span>
                 </div>
                 <div className={styles.expValue}>$16,567,645,293</div>
                 <div className={styles.progressBar}>
-                    <div className={styles.progressFill}></div>
+                    <div
+                        className={styles.progressFill}
+                        style={{ width: loadValue }}
+                    ></div>
                 </div>
             </div>
 
@@ -35,8 +49,10 @@ const HealthCard = () => {
                     </div>
                     <div style={{ height: '20px' }}></div>
                     <div className={styles.statItem}>
-                        <span className={styles.statLabel}>Renewable Energy</span>
-                        <span className={styles.statValue} style={{ color: '#3b82f6' }}>64.6M MWh</span>
+                        <span className={styles.statLabel}>Active Uplinks</span>
+                        <span className={styles.statValue} style={{ color: '#3b82f6' }}>
+                            {telemetryData?.active_nodes || 0} Nodes
+                        </span>
                     </div>
                 </div>
                 <div className={styles.gridCol}>
@@ -54,7 +70,9 @@ const HealthCard = () => {
 
             <footer className={styles.footer}>
                 <span>Source: Worldometer Real-Time Analytics</span>
-                <span>Sensor Status: <span style={{ color: '#10b981' }}>Optimal</span></span>
+                <span>Sensor Status: <span style={{ color: isOperational ? '#10b981' : '#ef4444' }}>
+                    {isOperational ? 'Optimal' : 'Interrupted'}
+                </span></span>
             </footer>
         </div>
     );
