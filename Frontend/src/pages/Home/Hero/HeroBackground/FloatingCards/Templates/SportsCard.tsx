@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from "./SportsCard.module.css";
 import GermanyFlag from './img/de.png';
 import ItalyFlag from './img/it.png';
@@ -8,6 +7,14 @@ interface MatchDetailProps {
     value: string;
 }
 
+interface SportsCardProps {
+    telemetryData?: {
+        status: string;
+        active_nodes: number;
+        market_trend: string; // Used here for "Win Probability" shift
+    };
+}
+
 const MatchDetail = ({ label, value }: MatchDetailProps) => (
     <div className={styles.detailRow}>
         <span className={styles.label}>{label}</span>
@@ -15,7 +22,10 @@ const MatchDetail = ({ label, value }: MatchDetailProps) => (
     </div>
 );
 
-const SportsCard = () => {
+const SportsCard = ({ telemetryData }: SportsCardProps) => {
+    const isLive = telemetryData?.status === 'OPERATIONAL';
+    const viewers = telemetryData ? (telemetryData.active_nodes * 1250).toLocaleString() : "85,000";
+
     const matchData = {
         matchday: 3,
         league: "UEFA Nations League",
@@ -25,14 +35,17 @@ const SportsCard = () => {
         date: "22 Mar 2026",
         venue: "Allianz Arena",
         kickoff: "20:45",
-        status: "Finished"
+        status: isLive ? "LIVE" : "Finished"
     };
 
     return (
         <div id="sports-card-render" className={styles.cardContainer}>
             <header className={styles.header}>
                 <span className={styles.leagueBadge}>{matchData.league}</span>
-                <h2 className={styles.matchdayTitle}>Matchday {matchData.matchday}</h2>
+                <div className={styles.liveIndicator}>
+                    {isLive && <div className={styles.pulseDot}></div>}
+                    <h2 className={styles.matchdayTitle}>Matchday {matchData.matchday}</h2>
+                </div>
             </header>
 
             <div className={styles.matchupSection}>
@@ -44,8 +57,10 @@ const SportsCard = () => {
                 </div>
 
                 <div className={styles.scoreContainer}>
-                    <div className={styles.scoreDisplay}>1:1</div>
-                    <div className={styles.statusBadge}>{matchData.status}</div>
+                    <div className={styles.scoreDisplay}>{matchData.score}</div>
+                    <div className={`${styles.statusBadge} ${isLive ? styles.liveActive : ''}`}>
+                        {matchData.status}
+                    </div>
                 </div>
 
                 <div className={styles.teamSide}>
@@ -58,12 +73,12 @@ const SportsCard = () => {
 
             <div className={styles.infoGrid}>
                 <div className={styles.infoBlock}>
-                    <MatchDetail label="Date" value={matchData.date} />
-                    <MatchDetail label="Kickoff" value={matchData.kickoff} />
+                    <MatchDetail label="Global Viewers" value={viewers} />
+                    <MatchDetail label="Stream Signal" value={isLive ? "Encrypted" : "Archive"} />
                 </div>
                 <div className={styles.infoBlock}>
                     <MatchDetail label="Venue" value={matchData.venue} />
-                    <MatchDetail label="Match ID" value="UNL-2026-042" />
+                    <MatchDetail label="Uplink ID" value={`SAT-${telemetryData?.active_nodes || '000'}`} />
                 </div>
             </div>
         </div>
