@@ -9,9 +9,10 @@ interface CardProps {
     radius: number
     speed: number
     phaseOffset: number
+    telemetryData?: any
 }
 
-function Card({ globeRef, templateId, radius, speed, phaseOffset }: CardProps) {
+function Card({ globeRef, templateId, radius, speed, phaseOffset, telemetryData }: CardProps) {
     const meshRef = useRef<THREE.Group>(null!)
     const [texture, setTexture] = useState<THREE.Texture | null>(null)
     const [isFocused, setIsFocused] = useState(false)
@@ -19,8 +20,9 @@ function Card({ globeRef, templateId, radius, speed, phaseOffset }: CardProps) {
 
     useEffect(() => {
         const captureTexture = async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            await new Promise((resolve) => setTimeout(resolve, 500))
             const element = document.getElementById(templateId)
+
             if (element) {
                 try {
                     const canvas = await html2canvas(element, {
@@ -29,18 +31,23 @@ function Card({ globeRef, templateId, radius, speed, phaseOffset }: CardProps) {
                         useCORS: true,
                         allowTaint: true
                     })
+
                     const tex = new THREE.CanvasTexture(canvas)
                     tex.anisotropy = 16
                     tex.colorSpace = THREE.SRGBColorSpace
                     tex.needsUpdate = true
+
+                    if (texture) texture.dispose()
+
                     setTexture(tex)
                 } catch (error) {
                     console.error(error)
                 }
             }
         }
+
         captureTexture()
-    }, [templateId])
+    }, [templateId, telemetryData])
 
     useFrame(({ clock }) => {
         if (!meshRef.current) return
@@ -75,12 +82,12 @@ function Card({ globeRef, templateId, radius, speed, phaseOffset }: CardProps) {
         >
             <mesh>
                 <planeGeometry args={[4.5, 2.5]} />
-                <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
-            </mesh>
-
-            <mesh rotation={[0, Math.PI, 0]}>
-                <planeGeometry args={[4.5, 2.5]} />
-                <meshStandardMaterial map={texture} transparent side={THREE.FrontSide} />
+                <meshStandardMaterial
+                    map={texture}
+                    transparent
+                    side={THREE.DoubleSide}
+                    alphaTest={0.5}
+                />
             </mesh>
         </group>
     )
