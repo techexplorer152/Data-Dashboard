@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from "./HealthCard.module.css";
 
 interface HealthCardProps {
@@ -5,12 +6,27 @@ interface HealthCardProps {
         status: string;
         system_load: string;
         active_nodes: number;
+        global_stats?: {
+            population: number;
+            source: string;
+        };
     };
 }
 
 const HealthCard = ({ telemetryData }: HealthCardProps) => {
     const isOperational = telemetryData?.status === 'OPERATIONAL';
     const loadValue = telemetryData?.system_load || "0%";
+
+    const rawPop = telemetryData?.global_stats?.population || 8280304948;
+    const displayPop = rawPop.toLocaleString();
+
+    const birthsToday = Math.floor(rawPop * 0.00004).toLocaleString();
+    const deathsToday = Math.floor(rawPop * 0.000018).toLocaleString();
+    const expenditure = (rawPop * 2.15).toLocaleString(undefined, {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+    });
 
     return (
         <div id="health-card-render" className={styles.cardContainer}>
@@ -22,16 +38,16 @@ const HealthCard = ({ telemetryData }: HealthCardProps) => {
                     </div>
                     <div className={styles.categoryBadge}>GLOBAL HEALTH INDEX</div>
                 </div>
-                <h1 className={styles.mainPopulation}>8,280,304,948</h1>
+                <h1 className={styles.mainPopulation}>{displayPop}</h1>
                 <div className={styles.subLabel}>Current World Population</div>
             </header>
 
             <div className={styles.expenditureBox}>
                 <div className={styles.expHeader}>
-                    <span>Network Analysis Expenditure</span>
+                    <span>Public Healthcare Expenditure Today</span>
                     <span style={{ color: '#3b82f6' }}>Load: {loadValue}</span>
                 </div>
-                <div className={styles.expValue}>$16,567,645,293</div>
+                <div className={styles.expValue}>{expenditure}</div>
                 <div className={styles.progressBar}>
                     <div
                         className={styles.progressFill}
@@ -44,7 +60,7 @@ const HealthCard = ({ telemetryData }: HealthCardProps) => {
                 <div className={styles.gridCol}>
                     <div className={styles.statItem}>
                         <span className={styles.statLabel}>Births Today</span>
-                        <span className={`${styles.statValue} ${styles.up}`}>+332,809</span>
+                        <span className={`${styles.statValue} ${styles.up}`}>+{birthsToday}</span>
                     </div>
                     <div style={{ height: '20px' }}></div>
                     <div className={styles.statItem}>
@@ -57,7 +73,7 @@ const HealthCard = ({ telemetryData }: HealthCardProps) => {
                 <div className={styles.gridCol}>
                     <div className={styles.statItem}>
                         <span className={styles.statLabel}>Deaths Today</span>
-                        <span className={`${styles.statValue} ${styles.down}`}>-156,821</span>
+                        <span className={`${styles.statValue} ${styles.down}`}>-{deathsToday}</span>
                     </div>
                     <div style={{ height: '20px' }}></div>
                     <div className={styles.statItem}>
@@ -68,7 +84,7 @@ const HealthCard = ({ telemetryData }: HealthCardProps) => {
             </div>
 
             <footer className={styles.footer}>
-                <span>Source: Worldometer Real-Time Analytics</span>
+                <span>Source: {telemetryData?.global_stats?.source || "World Bank"}</span>
                 <span>Sensor Status: <span style={{ color: isOperational ? '#10b981' : '#ef4444' }}>
                     {isOperational ? 'Optimal' : 'Interrupted'}
                 </span></span>

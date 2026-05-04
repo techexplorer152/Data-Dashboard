@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 // @ts-ignore
 import Hero from './pages/Home/Hero/Hero';
 import Finance from './pages/Finance Page/Finance';
+import Health from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/HealthCard'
 import Footer from './components/Footer/footer';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home'
@@ -34,6 +35,7 @@ function App() {
             </Routes>
             <Footer/>
             <Text/>
+            <Health/>
         </div>
     );
 }
