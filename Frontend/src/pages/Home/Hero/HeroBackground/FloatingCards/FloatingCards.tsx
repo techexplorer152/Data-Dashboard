@@ -80,12 +80,24 @@ function Card({ globeRef, templateId, radius, speed, phaseOffset, telemetryData 
             onPointerOver={() => (document.body.style.cursor = 'pointer')}
             onPointerOut={() => (document.body.style.cursor = 'auto')}
         >
+            {/* FRONT SIDE */}
             <mesh>
                 <planeGeometry args={[4.5, 2.5]} />
                 <meshStandardMaterial
                     map={texture}
                     transparent
-                    side={THREE.DoubleSide}
+                    side={THREE.FrontSide}
+                    alphaTest={0.5}
+                />
+            </mesh>
+
+            {/* BACK SIDE */}
+            <mesh rotation={[0, Math.PI, 0]}>
+                <planeGeometry args={[4.5, 2.5]} />
+                <meshStandardMaterial
+                    map={texture}
+                    transparent
+                    side={THREE.FrontSide}
                     alphaTest={0.5}
                 />
             </mesh>

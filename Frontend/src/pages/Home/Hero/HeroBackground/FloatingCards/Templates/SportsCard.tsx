@@ -11,7 +11,7 @@ interface SportsCardProps {
     telemetryData?: {
         status: string;
         active_nodes: number;
-        market_trend: string; // Used here for "Win Probability" shift
+        market_trend: string;
     };
 }
 

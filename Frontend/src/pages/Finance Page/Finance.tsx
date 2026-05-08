@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from "./FinanceCard.module.css";
+import styles from "./Finance.module.css";
 
 interface FinanceCardProps {
     telemetryData?: {

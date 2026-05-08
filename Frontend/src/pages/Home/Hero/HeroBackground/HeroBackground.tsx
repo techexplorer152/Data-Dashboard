@@ -4,84 +4,45 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import Globe from './Globe/Globe';
 import Card from './FloatingCards/FloatingCards';
-import FloatingCardTemplate from './FloatingCards/Templates/FloatingCardTemplate';
-import SportsCard from './FloatingCards/Templates/SportsCard';
-import HealthCard from './FloatingCards/Templates/HealthCard';
 import styles from './HeroBackground.module.css';
+
+
+const cardsConfig = [
+    { id: "card-1", radius: 6, speed: 0.2, type: 'economy' },
+    { id: "card-2", radius: 6, speed: 0.2, type: 'sports' },
+    { id: "card-3", radius: 6, speed: 0.2, type: 'health' }
+];
 
 function HeroBackground() {
     const globeRef = useRef<THREE.Mesh>(null!);
 
-    const cards = [
-        { id: "card-1", radius: 6, speed: 0.2, type: 'economy' },
-        { id: "card-2", radius: 6, speed: 0.2, type: 'sports' },
-        { id: "card-3", radius: 6, speed: 0.2, type: 'health' }
-    ];
-
     return (
-        <div className={styles.container}>
-            {cards.map(card => (
-                <div
-                    key={card.id}
-                    id={card.id}
-                    style={{ position: "absolute", top: "-10000px", left: "-10000px", pointerEvents: "none" }}
-                >
-                    {card.type === 'sports' && <SportsCard />}
-                    {card.type === 'economy' && <FloatingCardTemplate />}
-                    {card.type === 'health' && <HealthCard />}
-                </div>
-            ))}
+        <div className={styles.canvasWrapper}>
+            <Canvas
+                style={{ width: "100%", height: "100%" }}
+                camera={{ position: [0, 0, 10], fov: 45 }}
+            >
+                <ambientLight intensity={1.5} />
+                <pointLight position={[10, 10, 10]} />
 
-            <div className={styles.canvasWrapper}>
-                <Canvas
-                    style={{ width: "100%", height: "100%" }}
-                    camera={{ position: [0, 0, 10], fov: 45 }}
-                >
-                    <ambientLight intensity={1.5} />
-                    <pointLight position={[10, 10, 10]} />
+                <Suspense fallback={null}>
+                    <Globe ref={globeRef} />
 
-                    <Suspense fallback={null}>
-                        <Globe ref={globeRef} />
+                    {cardsConfig.map((card, index) => (
+                        <Card
+                            key={card.id}
+                            globeRef={globeRef}
+                            templateId={card.id}
+                            radius={card.radius}
+                            speed={card.speed}
+                            phaseOffset={(index / cardsConfig.length) * Math.PI * 2}
+                        />
+                    ))}
+                </Suspense>
 
-                        {cards.map((card, index) => (
-                            <Card
-                                key={card.id}
-                                globeRef={globeRef}
-                                templateId={card.id}
-                                radius={card.radius}
-                                speed={card.speed}
-                                phaseOffset={(index / cards.length) * Math.PI * 2}
-                            />
-                        ))}
-                    </Suspense>
-
-                    <OrbitControls
-                        rotateSpeed={0.4}
-                        enablePan={false}
-                        enableRotate={false}
-                        enableZoom={false}
-                        minDistance={5}
-                        maxDistance={15}
-                        autoRotate={false}
-                    />
-
-                    <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                </Canvas>
-            </div>
-
-            {/*<div className={styles.uiOverlay}>
-            <header className={styles.header}>
-                <h1>NETWORK<span>_CORE</span></h1>
-                <div className={styles.statusBadge}>SYSTEM ONLINE</div>
-            </header>
-
-            <main className={styles.mainContent}>
-                <div className={styles.glassCard}>
-                    <h3>Global Traffic</h3>
-                    <p>Real-time data stream active...</p>
-                </div>
-            </main>
-        </div>*/}
+                <OrbitControls enablePan={false} enableRotate={false} enableZoom={false} />
+                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            </Canvas>
         </div>
     );
 }
