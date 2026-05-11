@@ -55,8 +55,8 @@ const FloatingGdpCard = () => {
                     COUNTRIES.map(async (country) => {
                         if (country.code === "XKX" || country.code === "ALB") {
                             const fallback = country.code === "ALB"
-                                ? { gdp: "18.92B", growth: "3.4%" }
-                                : { gdp: "9.41B", growth: "3.8%" };
+                                ? { gdp: "22.98B", growth: "3.4%" }
+                                : { gdp: "10.41B", growth: "3.8%" };
                             return { ...country, ...fallback };
                         }
 
@@ -65,21 +65,22 @@ const FloatingGdpCard = () => {
                         );
                         const data = await response.json();
 
-                        if (Array.isArray(data) && data.length >= 2) {
+                        if (data && Array.isArray(data) && data.length >= 2) {
                             const latest = data[0].value;
                             const previous = data[1].value;
-                            const isTrillion = latest > 1_000_000_000_000;
+
+                            const displayGdp = latest >= 1_000_000_000_000
+                                ? (latest / 1_000_000_000_000).toFixed(2) + "T"
+                                : (latest / 1_000_000_000).toFixed(2) + "B";
 
                             return {
                                 ...country,
-                                gdp: isTrillion
-                                    ? (latest / 1_000_000_000_000).toFixed(2) + "T"
-                                    : (latest / 1_000_000_000).toFixed(2) + "B",
+                                gdp: displayGdp,
                                 growth: (((latest - previous) / previous) * 100).toFixed(1) + "%"
                             };
                         }
 
-                        return { ...country, gdp: "Data Sync...", growth: "0.0%" };
+                        return { ...country, gdp: "Offline", growth: "---" };
                     })
                 );
                 setStats(results);
@@ -136,9 +137,9 @@ const FloatingGdpCard = () => {
                 </div>
 
                 <div className={styles.statsSection}>
-                    <StatRow img={UnFlag} val1="FINNHUB DATA" val2="EST." />
+                    <StatRow img={UnFlag} val1="FINNHUB LIVE" val2="EST." />
                     {loading ? (
-                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Updating Intelligence Hub...</div>
+                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Synchronizing...</div>
                     ) : (
                         stats.map((country) => (
                             <StatRow
