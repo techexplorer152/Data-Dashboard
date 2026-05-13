@@ -48,20 +48,23 @@ const FloatingGdpCard = () => {
 
     useEffect(() => {
         const fetchGdpData = async () => {
-            const FINNHUB_KEY = import.meta.env.VITE_FINNHUB_KEY;
+            const key = import.meta.env.VITE_FINNHUB_KEY;
+
+            console.log("VITE_FINNHUB_KEY loaded:", !!key);
 
             try {
                 const results = await Promise.all(
                     COUNTRIES.map(async (country) => {
                         if (country.code === "XKX" || country.code === "ALB") {
-                            const fallback = country.code === "ALB"
-                                ? { gdp: "22.98B", growth: "3.4%" }
-                                : { gdp: "10.41B", growth: "3.8%" };
-                            return { ...country, ...fallback };
+                            return {
+                                ...country,
+                                gdp: country.code === "ALB" ? "22.98B" : "10.41B",
+                                growth: country.code === "ALB" ? "3.4%" : "3.8%"
+                            };
                         }
 
                         const response = await fetch(
-                            `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${FINNHUB_KEY}`
+                            `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
                         );
                         const data = await response.json();
 
@@ -80,12 +83,14 @@ const FloatingGdpCard = () => {
                             };
                         }
 
+                        console.error(`Missing data for ${country.name}`, data);
                         return { ...country, gdp: "Offline", growth: "---" };
                     })
                 );
                 setStats(results);
                 setLoading(false);
             } catch (err) {
+                console.error("Fetch Logic Error:", err);
                 setLoading(false);
             }
         };
@@ -115,24 +120,12 @@ const FloatingGdpCard = () => {
                         <line x1="0" y1="20" x2="200" y2="20" stroke="#f1f5f9" strokeWidth="0.5" />
                         <line x1="0" y1="50" x2="200" y2="50" stroke="#f1f5f9" strokeWidth="0.5" />
                         <line x1="0" y1="80" x2="200" y2="80" stroke="#f1f5f9" strokeWidth="0.5" />
-                        <polyline
-                            points="0,80 50,60 100,75 150,40 200,35"
-                            fill="none"
-                            stroke="#00ff88"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
+                        <polyline points="0,80 50,60 100,75 150,40 200,35" fill="none" stroke="#00ff88" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         <polyline points="0,95 50,85 100,50 150,70 200,20" fill="none" stroke="#46a3b1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
 
                     <div className={styles.xAxis}>
-                        <span>2020</span>
-                        <span>2021</span>
-                        <span>2022</span>
-                        <span>2023</span>
-                        <span>2024</span>
-                        <span>LIVE</span>
+                        <span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span>
                     </div>
                 </div>
 
@@ -142,12 +135,7 @@ const FloatingGdpCard = () => {
                         <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Synchronizing...</div>
                     ) : (
                         stats.map((country) => (
-                            <StatRow
-                                key={country.code}
-                                img={country.flag}
-                                val1={country.gdp}
-                                val2={country.growth}
-                            />
+                            <StatRow key={country.code} img={country.flag} val1={country.gdp} val2={country.growth} />
                         ))
                     )}
                 </div>
