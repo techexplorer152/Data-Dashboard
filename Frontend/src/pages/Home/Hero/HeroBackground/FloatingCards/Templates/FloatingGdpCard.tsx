@@ -50,12 +50,10 @@ const FloatingGdpCard = () => {
         const fetchGdpData = async () => {
             const key = import.meta.env.VITE_FINNHUB_KEY;
 
-            console.log("VITE_FINNHUB_KEY loaded:", !!key);
-
             try {
                 const results = await Promise.all(
                     COUNTRIES.map(async (country) => {
-                        if (country.code === "XKX" || country.code === "ALB") {
+                        if (country.code === "ALB" || country.code === "XKX") {
                             return {
                                 ...country,
                                 gdp: country.code === "ALB" ? "22.98B" : "10.41B",
@@ -63,34 +61,30 @@ const FloatingGdpCard = () => {
                             };
                         }
 
-                        const response = await fetch(
+                        if (!key) return { ...country, gdp: "No Key", growth: "---" };
+
+                        const res = await fetch(
                             `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
                         );
-                        const data = await response.json();
 
-                        if (data && Array.isArray(data) && data.length >= 2) {
+                        const data = await res.json();
+
+                        if (Array.isArray(data) && data.length >= 2) {
                             const latest = data[0].value;
-                            const previous = data[1].value;
-
-                            const displayGdp = latest >= 1_000_000_000_000
-                                ? (latest / 1_000_000_000_000).toFixed(2) + "T"
-                                : (latest / 1_000_000_000).toFixed(2) + "B";
-
+                            const prev = data[1].value;
                             return {
                                 ...country,
-                                gdp: displayGdp,
-                                growth: (((latest - previous) / previous) * 100).toFixed(1) + "%"
+                                gdp: (latest / 1e12).toFixed(2) + "T",
+                                growth: (((latest - prev) / prev) * 100).toFixed(1) + "%"
                             };
                         }
 
-                        console.error(`Missing data for ${country.name}`, data);
                         return { ...country, gdp: "Offline", growth: "---" };
                     })
                 );
                 setStats(results);
                 setLoading(false);
             } catch (err) {
-                console.error("Fetch Logic Error:", err);
                 setLoading(false);
             }
         };
@@ -102,20 +96,12 @@ const FloatingGdpCard = () => {
         <div id="floating-card-render" className={styles.cardContainer}>
             <h2 className={styles.title}>Global Economic Intelligence</h2>
             <hr className={styles.divider} />
-
             <div className={styles.content}>
                 <div className={styles.chartSection}>
                     <div className={styles.legend}>
-                        <div className={styles.legendItem}>
-                            <span className={`${styles.dot} ${styles.bgSeries1}`}></span>
-                            <span>GDP Growth</span>
-                        </div>
-                        <div className={styles.legendItem}>
-                            <span className={`${styles.dot} ${styles.bgSeries2}`}></span>
-                            <span>Market Flow</span>
-                        </div>
+                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries1}`}></span><span>GDP Growth</span></div>
+                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries2}`}></span><span>Market Flow</span></div>
                     </div>
-
                     <svg viewBox="0 0 200 100" className={styles.svgChart} preserveAspectRatio="none">
                         <line x1="0" y1="20" x2="200" y2="20" stroke="#f1f5f9" strokeWidth="0.5" />
                         <line x1="0" y1="50" x2="200" y2="50" stroke="#f1f5f9" strokeWidth="0.5" />
@@ -123,16 +109,12 @@ const FloatingGdpCard = () => {
                         <polyline points="0,80 50,60 100,75 150,40 200,35" fill="none" stroke="#00ff88" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         <polyline points="0,95 50,85 100,50 150,70 200,20" fill="none" stroke="#46a3b1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-
-                    <div className={styles.xAxis}>
-                        <span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span>
-                    </div>
+                    <div className={styles.xAxis}><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span></div>
                 </div>
-
                 <div className={styles.statsSection}>
                     <StatRow img={UnFlag} val1="FINNHUB LIVE" val2="EST." />
                     {loading ? (
-                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Synchronizing...</div>
+                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing...</div>
                     ) : (
                         stats.map((country) => (
                             <StatRow key={country.code} img={country.flag} val1={country.gdp} val2={country.growth} />
