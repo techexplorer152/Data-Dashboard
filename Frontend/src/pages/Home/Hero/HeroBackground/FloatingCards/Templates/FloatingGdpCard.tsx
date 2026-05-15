@@ -48,7 +48,7 @@ const FloatingGdpCard = () => {
 
     useEffect(() => {
         const fetchGdpData = async () => {
-            const key = import.meta.env.VITE_FINNHUB_KEY;
+            const key = "YOUR_ACTUAL_FINNHUB_KEY_HERE";
 
             try {
                 const results = await Promise.all(
@@ -60,8 +60,6 @@ const FloatingGdpCard = () => {
                                 growth: country.code === "ALB" ? "3.4%" : "3.8%"
                             };
                         }
-
-                        if (!key) return { ...country, gdp: "No Key", growth: "---" };
 
                         const res = await fetch(
                             `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
@@ -111,19 +109,4 @@ const FloatingGdpCard = () => {
                     </svg>
                     <div className={styles.xAxis}><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span></div>
                 </div>
-                <div className={styles.statsSection}>
-                    <StatRow img={UnFlag} val1="FINNHUB LIVE" val2="EST." />
-                    {loading ? (
-                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing...</div>
-                    ) : (
-                        stats.map((country) => (
-                            <StatRow key={country.code} img={country.flag} val1={country.gdp} val2={country.growth} />
-                        ))
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default FloatingGdpCard;
+                <div className
