@@ -109,4 +109,19 @@ const FloatingGdpCard = () => {
                     </svg>
                     <div className={styles.xAxis}><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span></div>
                 </div>
-                <div className
+                <div className={styles.statsSection}>
+                    <StatRow img={UnFlag} val1="FINNHUB LIVE" val2="EST." />
+                    {loading ? (
+                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing...</div>
+                    ) : (
+                        stats.map((country) => (
+                            <StatRow key={country.code} img={country.flag} val1={country.gdp} val2={country.growth} />
+                        ))
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default FloatingGdpCard;
