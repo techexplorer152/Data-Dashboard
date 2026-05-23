@@ -48,7 +48,7 @@ const FloatingGdpCard = () => {
 
     useEffect(() => {
         const fetchGdpData = async () => {
-            const key = import.meta.env.VITE_FINNHUB_KEY || "YOUR_HARDCODED_KEY_HERE";
+            const key = import.meta.env.VITE_FINNHUB_KEY;
 
             try {
                 const results = await Promise.all(
@@ -56,35 +56,37 @@ const FloatingGdpCard = () => {
                         if (country.code === "ALB" || country.code === "XKX") {
                             return {
                                 ...country,
-                                gdp: country.code === "ALB" ? "22.98B" : "10.41B",
-                                growth: country.code === "ALB" ? "3.4%" : "3.8%"
+                                gdp: country.code === "ALB" ? "25.43B" : "11.20B",
+                                growth: country.code === "ALB" ? "3.6%" : "3.9%"
                             };
                         }
 
-                        try {
-                            const res = await fetch(
-                                `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
-                            );
-                            const data = await res.json();
+                        if (key) {
+                            try {
+                                const res = await fetch(
+                                    `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
+                                );
+                                const data = await res.json();
 
-                            if (Array.isArray(data) && data.length >= 2 && data[0]?.value) {
-                                const latest = data[0].value;
-                                const prev = data[1].value;
-                                return {
-                                    ...country,
-                                    gdp: (latest / 1e12).toFixed(2) + "T",
-                                    growth: (((latest - prev) / prev) * 100).toFixed(1) + "%"
-                                };
+                                if (Array.isArray(data) && data.length >= 2 && data[0]?.value) {
+                                    const latest = data[0].value;
+                                    const prev = data[1].value;
+                                    return {
+                                        ...country,
+                                        gdp: (latest / 1e12).toFixed(2) + "T",
+                                        growth: (((latest - prev) / prev) * 100).toFixed(1) + "%"
+                                    };
+                                }
+                            } catch (e) {
+                                console.error(e);
                             }
-                        } catch (e) {
-                            console.error(e);
                         }
 
                         const globalEstimates: Record<string, { gdp: string; growth: string }> = {
-                            USA: { gdp: "28.78T", growth: "2.6%" },
-                            DEU: { gdp: "4.59T", growth: "0.3%" },
-                            JPN: { gdp: "4.21T", growth: "0.9%" },
-                            CHN: { gdp: "18.56T", growth: "4.8%" }
+                            USA: { gdp: "30.45T", growth: "2.3%" },
+                            CHN: { gdp: "19.22T", growth: "4.5%" },
+                            DEU: { gdp: "4.72T", growth: "0.8%" },
+                            JPN: { gdp: "4.35T", growth: "1.1%" }
                         };
 
                         return {
