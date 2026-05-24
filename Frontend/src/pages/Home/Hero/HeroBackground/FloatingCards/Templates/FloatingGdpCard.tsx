@@ -48,50 +48,55 @@ const FloatingGdpCard = () => {
 
     useEffect(() => {
         const fetchGdpData = async () => {
-            const key = import.meta.env.VITE_FINNHUB_KEY;
-
             try {
                 const results = await Promise.all(
                     COUNTRIES.map(async (country) => {
-                        if (country.code === "ALB" || country.code === "XKX") {
-                            return {
-                                ...country,
-                                gdp: country.code === "ALB" ? "25.43B" : "11.20B",
-                                growth: country.code === "ALB" ? "3.6%" : "3.9%"
-                            };
-                        }
+                        try {
+                            // Using World Bank API (No Key Required, Public, Stable)
+                            const res = await fetch(
+                                `https://api.worldbank.org/v2/country/${country.code}/indicator/NY.GDP.MKTP.CD?format=json&per_page=5`
+                            );
+                            const data = await res.json();
 
-                        if (key) {
-                            try {
-                                const res = await fetch(
-                                    `https://finnhub.io/api/v1/economic?code=MA-${country.code}-NY.GDP.MKTP.CD&token=${key}`
-                                );
-                                const data = await res.json();
+                            if (Array.isArray(data) && data[1] && data[1].length >= 2) {
+                                // Filter out null data years if any exist
+                                const validRecords = data[1].filter((record: any) => record.value !== null);
 
-                                if (Array.isArray(data) && data.length >= 2 && data[0]?.value) {
-                                    const latest = data[0].value;
-                                    const prev = data[1].value;
+                                if (validRecords.length >= 2) {
+                                    const latest = validRecords[0].value;
+                                    const prev = validRecords[1].value;
+
+                                    const displayGdp = latest >= 1e12
+                                        ? (latest / 1e12).toFixed(2) + "T"
+                                        : (latest / 1e9).toFixed(2) + "B";
+
+                                    const calculation = ((latest - prev) / prev) * 100;
+                                    const displayGrowth = (calculation >= 0 ? "+" : "") + calculation.toFixed(1) + "%";
+
                                     return {
                                         ...country,
-                                        gdp: (latest / 1e12).toFixed(2) + "T",
-                                        growth: (((latest - prev) / prev) * 100).toFixed(1) + "%"
+                                        gdp: displayGdp,
+                                        growth: displayGrowth
                                     };
                                 }
-                            } catch (e) {
-                                console.error(e);
                             }
+                        } catch (e) {
+                            console.error(`World Bank fetch failed for ${country.name}:`, e);
                         }
 
-                        const globalEstimates: Record<string, { gdp: string; growth: string }> = {
-                            USA: { gdp: "30.45T", growth: "2.3%" },
-                            CHN: { gdp: "19.22T", growth: "4.5%" },
-                            DEU: { gdp: "4.72T", growth: "0.8%" },
-                            JPN: { gdp: "4.35T", growth: "1.1%" }
+                        // Updated structural fallback estimates
+                        const structuralEstimates: Record<string, { gdp: string; growth: string }> = {
+                            USA: { gdp: "30.45T", growth: "+2.3%" },
+                            CHN: { gdp: "19.22T", growth: "+4.5%" },
+                            DEU: { gdp: "4.72T", growth: "+0.8%" },
+                            JPN: { gdp: "4.35T", growth: "+1.1%" },
+                            ALB: { gdp: "25.43B", growth: "+3.6%" },
+                            XKX: { gdp: "11.20B", growth: "+3.9%" }
                         };
 
                         return {
                             ...country,
-                            ...(globalEstimates[country.code] || { gdp: "Syncing...", growth: "0.0%" })
+                            ...(structuralEstimates[country.code] || { gdp: "Syncing...", growth: "0.0%" })
                         };
                     })
                 );
@@ -125,7 +130,7 @@ const FloatingGdpCard = () => {
                     <div className={styles.xAxis}><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span></div>
                 </div>
                 <div className={styles.statsSection}>
-                    <StatRow img={UnFlag} val1="FINNHUB LIVE" val2="EST." />
+                    <StatRow img={UnFlag} val1="WORLD BANK DATA" val2="EST." />
                     {loading ? (
                         <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing...</div>
                     ) : (
