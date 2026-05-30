@@ -1,7 +1,7 @@
 
 import { Routes, Route } from 'react-router-dom';
 
-// Pages & UI Components
+
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/footer';
 import Home from './pages/Home/Home';
@@ -11,7 +11,7 @@ import Services from './pages/Services/Services.js';
 import Finance from './pages/Finance Page/Finance';
 import Text from './pages/Home/Introduction/text';
 
-// 3D Background & HTML Templates
+
 import HeroBackground from './pages/Home/Hero/HeroBackground/HeroBackground';
 import FloatingGdpCard from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/FloatingGdpCard';
 import SportsCard from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/SportsCard';
@@ -32,7 +32,6 @@ function App() {
                 <div id="card-1"><FloatingGdpCard /></div>
             </div>
 
-            {/* --- 2. REGULAR WEBSITE CONTENT --- */}
             <main className="content-wrapper" style={{ position: 'relative', zIndex: 1 }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
