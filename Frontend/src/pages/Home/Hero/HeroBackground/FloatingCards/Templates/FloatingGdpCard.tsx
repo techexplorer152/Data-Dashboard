@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./FloatingCardTemplate.module.css";
 import UsaFlag from './img/us.png';
-import AlbaniaFlag from './img/al.jpg';
-import KosovoFlag from './img/xk.png';
 import JapanFlag from './img/jp.png';
 import ChinaFlag from './img/cn.png';
 import GermanyFlag from './img/de.png';
@@ -14,21 +12,19 @@ interface StatRowProps {
     val2: string;
 }
 
-interface CountryGdp {
+interface MarketAsset {
     name: string;
-    code: string;
+    id: string;
     flag: string;
-    gdp: string;
-    growth: string;
+    price: string;
+    change24h: string;
 }
 
-const COUNTRIES = [
-    { name: "USA", code: "USA", flag: UsaFlag },
-    { name: "Germany", code: "DEU", flag: GermanyFlag },
-    { name: "Japan", code: "JPN", flag: JapanFlag },
-    { name: "China", code: "CHN", flag: ChinaFlag },
-    { name: "Albania", code: "ALB", flag: AlbaniaFlag },
-    { name: "Kosovo", code: "XKX", flag: KosovoFlag },
+const ASSETS = [
+    { name: "Bitcoin (BTC)", id: "bitcoin", flag: UsaFlag },
+    { name: "Ethereum (ETH)", id: "ethereum", flag: GermanyFlag },
+    { name: "Solana (SOL)", id: "solana", flag: JapanFlag },
+    { name: "Binance Coin", id: "binancecoin", flag: ChinaFlag },
 ];
 
 const StatRow = ({ img, val1, val2 }: StatRowProps) => (
@@ -43,79 +39,57 @@ const StatRow = ({ img, val1, val2 }: StatRowProps) => (
 );
 
 const FloatingGdpCard = () => {
-    const [stats, setStats] = useState<CountryGdp[]>([]);
+    const [stats, setStats] = useState<MarketAsset[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchGdpData = async () => {
-            const globalEstimates: Record<string, { gdp: string; growth: string }> = {
-                USA: { gdp: "30.45T", growth: "+2.3%" },
-                CHN: { gdp: "19.22T", growth: "+4.5%" },
-                DEU: { gdp: "4.72T", growth: "+0.8%" },
-                JPN: { gdp: "4.35T", growth: "+1.1%" },
-                ALB: { gdp: "25.43B", growth: "+3.6%" },
-                XKX: { gdp: "11.20B", growth: "+3.9%" }
-            };
-
+        const fetchMarketData = async () => {
             try {
-                const results = await Promise.all(
-                    COUNTRIES.map(async (country) => {
-                        try {
-                            const res = await fetch(
-                                `https://api.worldbank.org/v2/country/${country.code}/indicator/NY.GDP.MKTP.CD?format=json&per_page=5`
-                            );
-                            const data = await res.json();
+                const res = await fetch(
+                    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd&include_24hr_change=true"
+                );
+                const data = await res.json();
 
-                            if (Array.isArray(data) && data[1]) {
-                                const validRecords = data[1].filter((r: any) => r && r.value !== null);
-
-                                if (validRecords.length >= 2) {
-                                    const latest = validRecords[0].value;
-                                    const prev = validRecords[1].value;
-
-                                    const displayGdp = latest >= 1e12
-                                        ? (latest / 1e12).toFixed(2) + "T"
-                                        : (latest / 1e9).toFixed(2) + "B";
-
-                                    const calculation = ((latest - prev) / prev) * 100;
-                                    const displayGrowth = (calculation >= 0 ? "+" : "") + calculation.toFixed(1) + "%";
-
-                                    return {
-                                        ...country,
-                                        gdp: displayGdp,
-                                        growth: displayGrowth
-                                    };
-                                }
-                            }
-                        } catch (e) {
-                            console.error(`Fetch fallback active for ${country.name}`);
-                        }
+                const results = ASSETS.map((asset) => {
+                    const assetData = data[asset.id];
+                    if (assetData) {
+                        const price = assetData.usd;
+                        const change = assetData.usd_24h_change;
 
                         return {
-                            ...country,
-                            ...(globalEstimates[country.code] || { gdp: "30.00T", growth: "+2.0%" })
+                            ...asset,
+                            price: price >= 1000
+                                ? `$${(price).toLocaleString(undefined, {maximumFractionDigits: 0})}`
+                                : `$${price.toFixed(2)}`,
+                            change24h: (change >= 0 ? "+" : "") + change.toFixed(2) + "%"
                         };
-                    })
-                );
+                    }
+                    return { ...asset, price: "Updating...", change24h: "0.0%" };
+                });
+
                 setStats(results);
                 setLoading(false);
             } catch (err) {
+                console.error(err);
+                setStats(ASSETS.map(a => ({ ...a, price: "$64,250", change24h: "+1.8%" })));
                 setLoading(false);
             }
         };
 
-        fetchGdpData();
+        fetchMarketData();
+        const interval = setInterval(fetchMarketData, 60000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div id="floating-card-render" className={styles.cardContainer}>
-            <h2 className={styles.title}>Global Economic Intelligence</h2>
+            <h2 className={styles.title}>Global Market Intelligence</h2>
             <hr className={styles.divider} />
             <div className={styles.content}>
                 <div className={styles.chartSection}>
                     <div className={styles.legend}>
-                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries1}`}></span><span>GDP Growth</span></div>
-                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries2}`}></span><span>Market Flow</span></div>
+                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries1}`}></span><span>Asset Flow</span></div>
+                        <div className={styles.legendItem}><span className={`${styles.dot} ${styles.bgSeries2}`}></span><span>Volatility</span></div>
                     </div>
                     <svg viewBox="0 0 200 100" className={styles.svgChart} preserveAspectRatio="none">
                         <line x1="0" y1="20" x2="200" y2="20" stroke="#f1f5f9" strokeWidth="0.5" />
@@ -127,12 +101,12 @@ const FloatingGdpCard = () => {
                     <div className={styles.xAxis}><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>LIVE</span></div>
                 </div>
                 <div className={styles.statsSection}>
-                    <StatRow img={UnFlag} val1="WORLD BANK DATA" val2="EST." />
+                    <StatRow img={UnFlag} val1="REALTIME INDEX" val2="24H" />
                     {loading ? (
-                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing...</div>
+                        <div style={{ color: '#fff', padding: '10px', fontSize: '0.8rem' }}>Syncing Live Feeds...</div>
                     ) : (
-                        stats.map((country) => (
-                            <StatRow key={country.code} img={country.flag} val1={country.gdp} val2={country.growth} />
+                        stats.map((asset) => (
+                            <StatRow key={asset.id} img={asset.flag} val1={asset.price} val2={asset.change24h} />
                         ))
                     )}
                 </div>
