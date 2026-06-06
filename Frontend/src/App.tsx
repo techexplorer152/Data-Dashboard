@@ -17,11 +17,7 @@ function App() {
     return (
         <div className="app-container">
             <Navbar />
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: "20px"}}>
-                <div id="card-2"><SportsCard /></div>
-                <div id="card-3"><HealthCard /></div>
-                <div id="card-1"><FloatingGdpCard /></div>
-            </div>
+
             <main className="content-wrapper" style={{ position: 'relative', zIndex: 1 }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -40,7 +36,13 @@ function App() {
                 </Routes>
                 <Text />
             </main>
-            <HeroBackground />
+
+            <HeroBackground>
+                <div id="card-1"><FloatingGdpCard /></div>
+                <div id="card-2"><SportsCard /></div>
+                <div id="card-3"><HealthCard /></div>
+            </HeroBackground>
+
             <Footer />
         </div>
     );
