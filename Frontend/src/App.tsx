@@ -6,11 +6,6 @@ import About from './pages/About/About';
 import Contacts from './pages/Contact/Contacts';
 import Services from './pages/Services/Services.js';
 import Finance from './pages/Finance Page/Finance';
-import Text from './pages/Home/Introduction/text';
-import HeroBackground from './pages/Home/Hero/HeroBackground/HeroBackground';
-import FloatingGdpCard from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/FloatingGdpCard';
-import SportsCard from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/SportsCard';
-import HealthCard from './pages/Home/Hero/HeroBackground/FloatingCards/Templates/HealthCard';
 import './App.css';
 
 function App() {
@@ -18,30 +13,15 @@ function App() {
         <div className="app-container">
             <Navbar />
 
-            <main className="content-wrapper" style={{ position: 'relative', zIndex: 1 }}>
+            <main className="content-wrapper">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contacts />} />
                     <Route path="/services" element={<Services />} />
-                    <Route
-                        path="/finance"
-                        element={
-                            <>
-                                <Finance />
-                                <Footer />
-                            </>
-                        }
-                    />
+                    <Route path="/finance" element={<Finance />} />
                 </Routes>
-                <Text />
             </main>
-
-            <HeroBackground>
-                <div id="card-1"><FloatingGdpCard /></div>
-                <div id="card-2"><SportsCard /></div>
-                <div id="card-3"><HealthCard /></div>
-            </HeroBackground>
 
             <Footer />
         </div>
