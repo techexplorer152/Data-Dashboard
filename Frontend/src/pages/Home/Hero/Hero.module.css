@@ -57,18 +57,35 @@
 }
 
 .cardsOverlay {
-    grid-column: 1 / 4;
-    grid-row: 2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: 15;
 }
 
-.cardsOverlay > div {
+.cardsOverlay :global(#card-1),
+.cardsOverlay :global(#card-2),
+.cardsOverlay :global(#card-3) {
+    position: absolute;
     pointer-events: auto;
+}
+
+.cardsOverlay :global(#card-1) {
+    left: 40px;
+    top: 25%;
+}
+
+.cardsOverlay :global(#card-2) {
+    right: 40px;
+    top: 25%;
+}
+
+.cardsOverlay :global(#card-3) {
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
 }
 
 .logo {
